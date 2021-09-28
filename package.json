@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --testEnvironment=node --runInBand ./__test__",
+    "test": "jest --testEnvironment=node --runInBand --detectOpenHandles ./__test__",
     "test:watch": "jest --watch",
     "dev": "nodemon ./src",
-    "start": "node ./src/index.js"
+    "start": "node ./src/index.js",
+    "tcov": "npm run test -- --coverage --coverageReporters=text"
   },
   "type": "module",
   "keywords": [],
@@ -30,7 +31,7 @@
     "@shelf/jest-mongodb": "^2.0.3",
     "faker": "^5.5.3",
     "jest": "^27.1.0",
-    "mongodb-memory-server": "^7.3.6",
+    "mongodb-memory-server": "^6.9.6",
     "nodemon": "^2.0.12",
     "supertest": "^6.1.6"
   },
