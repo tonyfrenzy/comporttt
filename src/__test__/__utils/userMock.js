@@ -1,20 +1,13 @@
 const userMock = {
     completeData: {
-      firstname: "John",
-      lastname: "Doe",
       username: "johndoe",
-      email: "johndoe@test.com",
-      password: "johndoe123",
-      confirmPassword: "johndoe123"
-    },
-    missingUsername: {
       firstname: "John",
       lastname: "Doe",
       email: "johndoe@test.com",
       password: "johndoe123",
       confirmPassword: "johndoe123"
     },
-    incompleteData: {
+    incompleteRequiredData: {
       firstname: "John",
       email: "johndoe@test.com",
       password: "johndoe123",
