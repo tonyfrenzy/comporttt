@@ -6,8 +6,14 @@ import userMock from './__utils/userMock.js';
 
 const request = supertest(app);
 
-beforeAll(async () => await dbMock.connect());
-afterEach(async () => await dbMock.clearDatabase());
+beforeAll(async () => {
+  await dbMock.connect();
+  jest.setTimeout(30000);
+});
+afterEach(async () => {
+  await dbMock.clearDatabase();
+  jest.setTimeout(30000);
+});
 afterAll(async () => await dbMock.disconnectDB());
 
 // USER REGISTRATION
