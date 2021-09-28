@@ -23,7 +23,7 @@ describe("POST /register", () => {
       expect(response.statusCode).toBe(200);
       expect(response.body.status).toBe("success");
       expect(response.body.message).toBe("user registration successful");
-      expect(response.body.data).toHaveProperty("firstname");
+      expect(response.body.data).toHaveProperty("email");
       expect(response.body.data).toHaveProperty("username");
     })
   })
@@ -66,7 +66,7 @@ describe("POST /register", () => {
 
       expect(response.statusCode).toBe(400);
       expect(response.body.status).toBe("fail");
-      expect(response.body.message).toBe("a user with email 'johndoe@test.com' already exists");
+      expect(response.body.message).toBe("username 'johndoe' is taken or a user with email 'johndoe@test.com' already exists");
     })
   })
 })

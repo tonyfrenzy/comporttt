@@ -21,27 +21,19 @@ const UserController = {
       }
 
       // find if email or username already exists
-      const isUserEmailExist = await User.findOne({ email });
-      const isUsernameExist = await User.findOne({ username  });
+      const isUserExist = await User.findOne({ 
+        $or: [{ username }, { email }] 
+      });
 
-      if(isUserEmailExist) {
+      if(isUserExist) {
         return res
           .status(400).json({ 
             status: 'fail', 
-            message: `a user with email '${email}' already exists`
-          });
-      }
-
-      if(isUsernameExist) {
-        return res
-          .status(400).json({ 
-            status: 'fail', 
-            message: `username '${username}' is taken` 
+            message: `username '${username}' is taken or a user with email '${email}' already exists`
           });
       }
 
       for (const field of reqFields) {
-        // console.log(field, reqBody[field]);
         if (!reqBody[field] ) {
           return res
             .status(400).json({ 
@@ -68,6 +60,9 @@ const UserController = {
         const savedUser = await newUser.save();
 
         if(savedUser) {
+          /**
+           * Send Verification email HERE...
+           */
           jwt.sign(
             { id: savedUser._id },
             process.env.JWT_SECRET,
@@ -81,7 +76,7 @@ const UserController = {
                 status: 'success',
                 data: {
                   id: savedUser._id,
-                  firstname: savedUser.firstname +" "+ savedUser.lastname,
+                  fullname: savedUser.firstname +" "+ savedUser.lastname,
                   username: savedUser.username,
                   email: savedUser.email,
                   token: "Bearer " + token
@@ -111,7 +106,6 @@ const UserController = {
     }
 
     try {
-      // const existingUser = await User.findOne({ email });
       const existingUser = await User.findOne({ 
         $or: [{ username: email }, { email: email }] 
       });
@@ -123,7 +117,6 @@ const UserController = {
         });
       }
 
-      // Check if password matches password stored in the db
       const isMatch = await bcrypt.compare(password, existingUser.password);
       
       // Prevents saved password from being visible to user
@@ -173,8 +166,7 @@ const UserController = {
         message: error.message 
       });
     }
-  },
-
+  }
 }
 
 export default UserController;
