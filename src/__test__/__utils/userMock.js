@@ -23,7 +23,8 @@ const userMock = {
 
     // Email Logins
     loginData: {
-      email: 'johndoe@test.com',
+      // email: 'johndoe@test.com',
+      email: 'johndoe',
       password: 'johndoe123'
     },
     incompleteLoginData: {

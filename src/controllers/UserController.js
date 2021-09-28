@@ -80,11 +80,11 @@ const UserController = {
               res.status(200).json({ 
                 status: 'success',
                 data: {
-                  token: "Bearer " + token,
                   id: savedUser._id,
                   firstname: savedUser.firstname +" "+ savedUser.lastname,
                   username: savedUser.username,
-                  email: savedUser.email
+                  email: savedUser.email,
+                  token: "Bearer " + token
                 },
                 message: 'user registration successful'
               });
@@ -94,11 +94,87 @@ const UserController = {
       }
     } catch (error) {
       return res.status(500).json({
-        status: "Failed",
+        status: "failed",
         error
       })
     }
-  }
+  },
+
+  login: async (req, res) => {
+    const { email, password } = req.body;
+
+    if(![email, password].every(Boolean)) {
+      return res.status(400).json({ 
+        status: "failed", 
+        message: "enter your email/username and password!"
+      });
+    }
+
+    try {
+      // const existingUser = await User.findOne({ email });
+      const existingUser = await User.findOne({ 
+        $or: [{ username: email }, { email: email }] 
+      });
+
+      if(!existingUser || !Object.keys(existingUser).length) {
+        return res.status(404).json({ 
+          status: "failed", 
+          message: "record not found" 
+        });
+      }
+
+      // Check if password matches password stored in the db
+      const isMatch = await bcrypt.compare(password, existingUser.password);
+      
+      // Prevents saved password from being visible to user
+      delete res.isMatch;
+
+      if(!isMatch) {
+        return res.status(404).json({ 
+          status: "failed", 
+          message: "email/username or password incorrect"
+        });
+      }
+
+      // Payload to be sent in token
+      const { _id, firstname, lastname, username, acl } = existingUser;
+
+      const payload = {
+        user: {
+          _id, firstname, lastname, username, acl
+        }
+      }
+
+      // Generate token
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { 
+        expiresIn: +process.env.JWT_EXPIRY
+      });
+      // console.log(token);
+
+      // If token is not generated
+      if(!token) return res.status(401).json({
+        status: "failed", 
+        message: "Error logging in. Could not generate token."
+      });
+
+      return res.status(200).json({
+        status: 'success',
+        message: "login successful",       
+        data: {
+          _id, firstname, lastname, username, acl, 
+          email: existingUser.email,
+          token: `Bearer ${token}`
+        }
+      })
+
+    } catch (error) {
+      return res.status(500).json({ 
+        status: "failed", 
+        message: error.message 
+      });
+    }
+  },
+
 }
 
 export default UserController;
