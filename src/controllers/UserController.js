@@ -17,7 +17,7 @@ const UserController = {
       if(password !== confirmPassword) {
         return res
           .status(400)
-          .json({ status: 'fail', message: 'Passwords do not match' });
+          .json({ status: 'failed', message: 'Passwords do not match' });
       }
 
       // find if email or username already exists
@@ -28,7 +28,7 @@ const UserController = {
       if(isUserExist) {
         return res
           .status(400).json({ 
-            status: 'fail', 
+            status: 'failed', 
             message: `username '${username}' is taken or a user with email '${email}' already exists`
           });
       }
@@ -37,7 +37,7 @@ const UserController = {
         if (!reqBody[field] ) {
           return res
             .status(400).json({ 
-              status: 'fail', 
+              status: 'failed', 
               message: `${field} field is required` 
             });
         }
@@ -46,7 +46,7 @@ const UserController = {
       if (!firstname || !lastname || !username || !email || !password || !confirmPassword) {
         return res
           .status(400).json({ 
-            status: 'fail', 
+            status: 'failed', 
             message: 'please fill all required fields' 
           });
       }
@@ -123,9 +123,9 @@ const UserController = {
       delete res.isMatch;
 
       if(!isMatch) {
-        return res.status(404).json({ 
+        return res.status(400).json({ 
           status: "failed", 
-          message: "email/username or password incorrect"
+          message: "incorrect email/username or password"
         });
       }
 
@@ -142,12 +142,11 @@ const UserController = {
       const token = jwt.sign(payload, process.env.JWT_SECRET, { 
         expiresIn: +process.env.JWT_EXPIRY
       });
-      // console.log(token);
 
       // If token is not generated
       if(!token) return res.status(401).json({
         status: "failed", 
-        message: "Error logging in. Could not generate token."
+        message: "error logging in. could not generate token."
       });
 
       return res.status(200).json({
@@ -166,6 +165,42 @@ const UserController = {
         message: error.message 
       });
     }
+  },
+
+  profile: async (req, res) => {
+    const { username } = req.params;
+    
+    try {
+      const user = await User.findOne({username}).select("-password");
+
+      if(!user) return res.status(404).json({
+        status: 'failed',
+        message: 'user not found'
+      })
+
+      if (username === req.user.username) {
+        return res.status(200).json({
+          status: 'success',
+          message: 'successful',
+          data: user
+        });
+      }
+
+      return res.status(401).json({
+        status: 'failed',
+        message: 'only personal profile access allowed',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "failed",
+        error: error.message
+      })
+    }
+  },
+
+  setDP: async (req, res) => {
+    // console.log(req.file);
+    // cloudinary.uploader.uploadq(req.file.original)
   }
 }
 
