@@ -49,7 +49,7 @@ const authValidator = async(req, res, next) => {
     req.user = {
       id: decodedToken.user._id,
       username: decodedToken.user.username,
-      acl: decodedToken.user.acl
+      isAdmin: decodedToken.user.isAdmin
     };
 
     // If all things pass, allow user proceed
