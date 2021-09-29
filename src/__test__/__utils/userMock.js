@@ -5,7 +5,8 @@ const userMock = {
       lastname: "Doe",
       email: "johndoe@test.com",
       password: "johndoe123",
-      confirmPassword: "johndoe123"
+      confirmPassword: "johndoe123",
+      isAdmin: 0
     },
     incompleteRequiredData: {
       firstname: "John",

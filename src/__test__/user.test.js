@@ -29,8 +29,9 @@ describe("POST /users/register", () => {
       expect(response.statusCode).toBe(200);
       expect(response.body.status).toBe("success");
       expect(response.body.message).toBe("user registration successful");
-      expect(response.body.data).toHaveProperty("email");
       expect(response.body.data).toHaveProperty("username");
+      expect(response.body.data).toHaveProperty("email");
+      expect(response.body.data).toHaveProperty("isAdmin");
     })
   })
 

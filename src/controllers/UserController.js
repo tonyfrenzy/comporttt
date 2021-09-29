@@ -79,6 +79,7 @@ const UserController = {
                   fullname: savedUser.firstname +" "+ savedUser.lastname,
                   username: savedUser.username,
                   email: savedUser.email,
+                  isAdmin: savedUser.isAdmin,
                   token: "Bearer " + token
                 },
                 message: 'user registration successful'
@@ -130,11 +131,11 @@ const UserController = {
       }
 
       // Payload to be sent in token
-      const { _id, firstname, lastname, username, acl } = existingUser;
+      const { _id, firstname, lastname, username, isAdmin } = existingUser;
 
       const payload = {
         user: {
-          _id, firstname, lastname, username, acl
+          _id, firstname, lastname, username, isAdmin
         }
       }
 
@@ -153,7 +154,7 @@ const UserController = {
         status: 'success',
         message: "login successful",       
         data: {
-          _id, firstname, lastname, username, acl, 
+          _id, firstname, lastname, username, isAdmin, 
           email: existingUser.email,
           token: `Bearer ${token}`
         }

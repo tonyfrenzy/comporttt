@@ -34,7 +34,7 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'Please enter a password']
   },
-  acl: {
+  isAdmin: {
     type: Boolean,
     default: 0
   },
