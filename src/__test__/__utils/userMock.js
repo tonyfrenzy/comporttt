@@ -5,7 +5,8 @@ const userMock = {
       lastname: "Doe",
       email: "johndoe@test.com",
       password: "johndoe123",
-      confirmPassword: "johndoe123"
+      confirmPassword: "johndoe123",
+      isAdmin: 0
     },
     incompleteRequiredData: {
       firstname: "John",
@@ -41,18 +42,19 @@ const userMock = {
 
     // Username Logins
     usernameLoginData: {
-      username: 'johndoe',
+      // username to use email field from fe.
+      email: 'johndoe', 
       password: 'johndoe123'
     },
     incompleteUsernameLoginData: {
-      username: 'johndoe'
+      email: 'johndoe'
     },
     incorrectUsernameLoginPassword: {
-      username: 'johndoe',
+      email: 'johndoe',
       password: 'incorrectPassword'
     },
     incorrectLoginUsername: {
-      username: 'thewrongjohndoe',
+      email: 'thewrongjohndoe',
       password: 'johndoe123'
     }
 }

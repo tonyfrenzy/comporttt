@@ -16,15 +16,13 @@ const authValidator = async(req, res, next) => {
   const bearerToken = req.headers.authorization.split(" ");
 
   try {
-    /*
     // Check if token is of appropriate format
     if(bearerToken[0] !== "Bearer") {
       return res.status(400).json({
-        status: "Failed",
-        message: "Invalid token format"
+        status: "failed",
+        message: "invalid token format"
       })
     }
-    */
 
     if(!bearerToken[1]) {
       return res.status(400).json({
@@ -33,8 +31,7 @@ const authValidator = async(req, res, next) => {
       })
     }
 
-    // const token = bearerToken[1];
-    const token = bearerToken;
+    const token = bearerToken[1];
 
     // Verify token
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -42,16 +39,17 @@ const authValidator = async(req, res, next) => {
     // If token verification failed
     if(!decodedToken) {
       return res.status(401).json({
-        status: "Failed",
-        message: "Unauthorized",
-        error: "Invalid auth token"
+        status: "failed",
+        message: "unauthorized",
+        error: "invalid auth token"
       });
     }
 
     // Add user's details to the req object for all protected routes
     req.user = {
       id: decodedToken.user._id,
-      acl: decodedToken.user.acl
+      username: decodedToken.user.username,
+      isAdmin: decodedToken.user.isAdmin
     };
 
     // If all things pass, allow user proceed
@@ -59,7 +57,7 @@ const authValidator = async(req, res, next) => {
     
   } catch (error) {
     return res.status(500).json({ 
-        status: "Failed", 
+        status: "failed", 
         message: error.message 
     });
   }
