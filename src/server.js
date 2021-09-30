@@ -12,6 +12,31 @@ app.get('/', (req, res) => {
   res.json({
     status: 'success',
     message: 'Welcome to Comporttt App.',
+    description: 'This is a mini documentation with publicly accessible endpoints by model.',
+    endpoints: {
+      user: {
+        endpoints: {
+          profile: '/users/:username'
+        }
+      },
+      admin: {
+        endpoints: {
+          dashboard: '/admins/:id'
+        }
+      },
+      category: {
+        endpoints: {
+          index: '/categories',
+          show: '/categories/:id'
+        }
+      },
+      knowledgebase: {
+        endpoints: {
+          index: '/knowledgebases',
+          show: '/knowledgebases/:id'
+        }
+      }
+    }
   });
 });
 
