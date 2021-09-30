@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import slug from 'mongoose-slug-generator';
+
+mongoose.plugin(slug);
 
 const { Schema, model, SchemaTypes } = mongoose;
 
@@ -8,9 +11,10 @@ const knowledgebaseSchema = new Schema(
       type: String,
       required: true,
     },
-    slug: {
-      type: String,
-      required: true,
+    slug: { 
+      type: String, 
+      slug: ["title"], 
+      unique: true 
     },
     body: {
         type: String,

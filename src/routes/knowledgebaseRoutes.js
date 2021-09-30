@@ -8,10 +8,10 @@ const router = Router();
 
 router.route('/')
     .get(KnowledgebaseController.index)
-    .get(KnowledgebaseController.show)
     .post([ authValidator, AdminMiddleware ], KnowledgebaseController.create)
 
 router.route('/:id')
+    .get(KnowledgebaseController.show)
     .put([ authValidator, AdminMiddleware ], KnowledgebaseController.update)
     .delete([ authValidator, AdminMiddleware ], KnowledgebaseController.destroy)
     ;
