@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import slug from 'mongoose-slug-generator';
+
+mongoose.plugin(slug);
 
 const { Schema, model } = mongoose;
 
@@ -8,9 +11,10 @@ const categorySchema = new Schema(
       type: String,
       required: true,
     },
-    slug: {
-      type: String,
-      required: true,
+    slug: { 
+      type: String, 
+      slug: ["name"], 
+      unique: true 
     },
     type: {
       type: String,

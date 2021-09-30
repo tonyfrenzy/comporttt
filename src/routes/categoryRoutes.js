@@ -8,12 +8,12 @@ const router = Router();
 
 router.route('/')
     .get(CategoryController.index)
-    .get(CategoryController.show)
     .post([ authValidator, AdminMiddleware ], CategoryController.create)
 
 router.route('/:id')
+    .get(CategoryController.show)
     .put([ authValidator, AdminMiddleware ], CategoryController.update)
     .delete([ authValidator, AdminMiddleware ], CategoryController.destroy)
     ;
-
+     
 export default router;
